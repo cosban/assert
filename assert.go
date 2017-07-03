@@ -22,14 +22,26 @@ func (self *Assert) False(e bool) {
 	}
 }
 
-func (self *Assert) Equals(e interface{}, a interface{}) {
-	if e != a {
+func (self *Assert) AreSame(e, a interface{}) {
+	if !areEqual(e, a) {
 		self.t.Fatalf("expected %v but received %v", e, a)
 	}
 }
 
-func (self *Assert) NotEquals(e interface{}, a interface{}) {
-	if e == a {
+func (self *Assert) AreNotSame(e, a interface{}) {
+	if areEqual(e, a) {
+		self.t.Fatalf("expected anything but %v but received %v", e, a)
+	}
+}
+
+func (self *Assert) Equals(e, a interface{}) {
+	if !areEquivalent(e, a) {
+		self.t.Fatalf("expected anything but %v but received %v", e, a)
+	}
+}
+
+func (self *Assert) NotEquals(e, a interface{}) {
+	if areEquivalent(e, a) {
 		self.t.Fatalf("expected anything but %v but received %v", e, a)
 	}
 }
@@ -41,13 +53,13 @@ func (self *Assert) Nil(e interface{}) {
 }
 
 func (self *Assert) NotNil(e interface{}) {
-	if e == (interface{})(nil) {
+	if areEquivalent(nil, e) {
 		self.t.Fatalf("Expected not nil but received nil")
 	}
 }
 
 func True(t *testing.T, e bool) {
-	if !e {
+	if !areEquivalent(nil, e) {
 		t.Fatalf("expected true but result was false.")
 	}
 }
