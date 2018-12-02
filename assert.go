@@ -1,110 +1,128 @@
+// package assert is available to assist with the testing portion of your project. It has been written to be fairly
+// simple to use and requires no configuration.
 package assert
 
 import "testing"
 
+// Assert wraps a *testing.T so that it does not need to be passed in to every assertion call
 type Assert struct {
 	t *testing.T
 }
 
+// New returns a new *Assert that contains a *testing.T
 func New(t *testing.T) *Assert {
 	t.Helper()
 	return &Assert{t: t}
 }
 
-func (self *Assert) True(e bool) {
+// True checks to see if actual is true. If it is not, it will cause the test to fail and log as such why it failed.
+func (self *Assert) True(actual bool) {
 	self.t.Helper()
-	if !e {
-		self.t.Fatalf("expected true but result was false.")
+	if !actual {
+		self.t.Errorf("expected true but result was false.")
 	}
 }
 
-func (self *Assert) False(e bool) {
+// True checks to see if actual is false. If it is not, it will cause the test to fail and log as such why it failed.
+func (self *Assert) False(actual bool) {
 	self.t.Helper()
-	if e {
-		self.t.Fatalf("expected false but result was true.")
+	if actual {
+		self.t.Errorf("expected false but result was true.")
 	}
 }
 
-func (self *Assert) AreSame(e, a interface{}) {
+// AreSame checks whether expected and actual are both the same type and are equivalent, failing the test if they aren't
+func (self *Assert) AreSame(expected, actual interface{}) {
 	self.t.Helper()
-	if !areEqual(e, a) {
-		self.t.Fatalf("expected %v but received %v", e, a)
+	if !areEqual(expected, actual) {
+		self.t.Errorf("expected %+v but received %+v", expected, actual)
 	}
 }
 
-func (self *Assert) AreNotSame(e, a interface{}) {
+// AreNotSame checks whether expected and actual are both the same type and are equivalent, failing the test if they are
+func (self *Assert) AreNotSame(expected, actual interface{}) {
 	self.t.Helper()
-	if areEqual(e, a) {
-		self.t.Fatalf("expected anything but %v but received %v", e, a)
+	if areEqual(expected, actual) {
+		self.t.Errorf("expected anything but %+v but received %+v", expected, actual)
 	}
 }
 
-func (self *Assert) Equals(e, a interface{}) {
+// Equals checks whether expected and actual are equivalent, failing the test if they aren't
+func (self *Assert) Equals(expected, actual interface{}) {
 	self.t.Helper()
-	if !areEquivalent(e, a) {
-		self.t.Fatalf("expected %v but received %v", e, a)
+	if !areEquivalent(expected, actual) {
+		self.t.Errorf("expected %+v but received %+v", expected, actual)
 	}
 }
 
-func (self *Assert) NotEquals(e, a interface{}) {
+// NotEquals checks whether expected and actual are equivalent, failing the test if they are
+func (self *Assert) NotEquals(expected, actual interface{}) {
 	self.t.Helper()
-	if areEquivalent(e, a) {
-		self.t.Fatalf("expected anything but %v but received %v", e, a)
+	if areEquivalent(expected, actual) {
+		self.t.Errorf("expected anything but %+v but received %+v", expected, actual)
 	}
 }
 
-func (self *Assert) Nil(e interface{}) {
+// Nil checks whether actual is nil, failing if it is not
+func (self *Assert) Nil(actual interface{}) {
 	self.t.Helper()
-	if e != (interface{})(nil) {
-		self.t.Fatalf("expected nil but received %v", e)
+	if areEquivalent(nil, actual) {
+		self.t.Errorf("expected nil but received %+v", actual)
 	}
 }
 
-func (self *Assert) NotNil(e interface{}) {
+// NotNil checks actual is nil, failing if it is
+func (self *Assert) NotNil(actual interface{}) {
 	self.t.Helper()
-	if areEquivalent(nil, e) {
-		self.t.Fatalf("Expected not nil but received nil")
+	if areEquivalent(nil, actual) {
+		self.t.Errorf("Expected not nil but received nil")
 	}
 }
 
-func True(t *testing.T, e bool) {
+// True checks to see if actual is true. If it is not, it will cause the test to fail and log as such why it failed.
+func True(t *testing.T, actual bool) {
 	t.Helper()
-	if !areEquivalent(nil, e) {
-		t.Fatalf("expected true but result was false.")
+	if !areEquivalent(nil, actual) {
+		t.Errorf("expected true but result was false.")
 	}
 }
 
-func False(t *testing.T, e bool) {
+// False checks to see if actual is true. If it is, it will cause the test to fail and log as such why it failed.
+func False(t *testing.T, actual bool) {
 	t.Helper()
-	if e {
-		t.Fatalf("expected false but result was true.")
+	if actual {
+		t.Errorf("expected false but result was true.")
 	}
 }
 
-func Equals(t *testing.T, e interface{}, a interface{}) {
+// Equals checks whether expected and actual are equivalent, failing the test if they aren't
+func Equals(t *testing.T, expected, actual interface{}) {
 	t.Helper()
-	if e != a {
-		t.Fatalf("expected %v but received %v", e, a)
+	if !areEquivalent(expected, actual) {
+		t.Errorf("expected %+v but received %+v", expected, actual)
 	}
 }
 
-func NotEquals(t *testing.T, e interface{}, a interface{}) {
+// NotEquals checks whether expected and actual are equivalent, failing the test if they are
+func NotEquals(t *testing.T, expected, actual interface{}) {
 	t.Helper()
-	if e == a {
-		t.Fatalf("expected anything but %v but received %v", e, a)
+	if areEquivalent(expected, actual) {
+		t.Errorf("expected anything but %+v but received %+v", expected, actual)
 	}
 }
 
-func Nil(t *testing.T, e interface{}) {
+// Nil checks whether actual is nil, failing if it is not
+func Nil(t *testing.T, actual interface{}) {
 	t.Helper()
-	if e != nil {
-		t.Fatalf("expected nil but received %v", e)
+	if !areEquivalent(nil, actual) {
+		t.Errorf("expected nil but received %+v", actual)
 	}
 }
 
-func NotNil(t *testing.T, e interface{}) {
+// NotNil checks whether actual is nil, failing if it is
+func NotNil(t *testing.T, actual interface{}) {
 	t.Helper()
-	if e == nil {
-		t.Fatalf("Expected not nil but received nil")
+	if areEquivalent(nil, actual) {
+		t.Errorf("Expected not nil but received nil")
 	}
 }
