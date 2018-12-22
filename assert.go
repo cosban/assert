@@ -19,51 +19,51 @@ func New(t *testing.T) *Assert {
 }
 
 // True checks to see if actual is true. If it is not, it will cause the test to fail and log as such why it failed.
-func (self *Assert) True(actual bool) {
-	self.t.Helper()
-	True(self.t, actual)
+func (assert *Assert) True(actual bool) {
+	assert.t.Helper()
+	True(assert.t, actual)
 }
 
-// True checks to see if actual is false. If it is not, it will cause the test to fail and log as such why it failed.
-func (self *Assert) False(actual bool) {
-	self.t.Helper()
-	False(self.t, actual)
+// False checks to see if actual is false. If it is not, it will cause the test to fail and log as such why it failed.
+func (assert *Assert) False(actual bool) {
+	assert.t.Helper()
+	False(assert.t, actual)
 }
 
 // AreIdentical checks whether expected and actual are both the same type and are equivalent, failing the test if they aren't
-func (self *Assert) AreIdentical(expected, actual interface{}) {
-	self.t.Helper()
-	AreIdentical(self.t, expected, actual)
+func (assert *Assert) AreIdentical(expected, actual interface{}) {
+	assert.t.Helper()
+	AreIdentical(assert.t, expected, actual)
 }
 
 // AreNotIdentical checks whether expected and actual are both the same type and are equivalent, failing the test if they are
-func (self *Assert) AreNotIdentical(expected, actual interface{}) {
-	self.t.Helper()
-	AreNotIdentical(self.t, expected, actual)
+func (assert *Assert) AreNotIdentical(expected, actual interface{}) {
+	assert.t.Helper()
+	AreNotIdentical(assert.t, expected, actual)
 }
 
 // Equals checks whether expected and actual are equivalent, failing the test if they aren't
-func (self *Assert) Equals(expected, actual interface{}) {
-	self.t.Helper()
-	Equals(self.t, expected, actual)
+func (assert *Assert) Equals(expected, actual interface{}) {
+	assert.t.Helper()
+	Equals(assert.t, expected, actual)
 }
 
 // NotEquals checks whether expected and actual are equivalent, failing the test if they are
-func (self *Assert) NotEquals(expected, actual interface{}) {
-	self.t.Helper()
-	NotEquals(self.t, expected, actual)
+func (assert *Assert) NotEquals(expected, actual interface{}) {
+	assert.t.Helper()
+	NotEquals(assert.t, expected, actual)
 }
 
 // Nil checks whether actual is nil, failing if it is not
-func (self *Assert) Nil(actual interface{}) {
-	self.t.Helper()
-	Nil(self.t, actual)
+func (assert *Assert) Nil(actual interface{}) {
+	assert.t.Helper()
+	Nil(assert.t, actual)
 }
 
 // NotNil checks actual is nil, failing if it is
-func (self *Assert) NotNil(actual interface{}) {
-	self.t.Helper()
-	NotNil(self.t, actual)
+func (assert *Assert) NotNil(actual interface{}) {
+	assert.t.Helper()
+	NotNil(assert.t, actual)
 }
 
 // True checks to see if actual is true. If it is not, it will cause the test to fail and log as such why it failed.
