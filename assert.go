@@ -70,7 +70,7 @@ func (assert *Assert) NotNil(actual interface{}) {
 func True(t *testing.T, actual bool) {
 	t.Helper()
 	if !actual {
-		t.Errorf("expected false but result was true.")
+		t.Errorf("expected true but result was false.")
 	}
 }
 
